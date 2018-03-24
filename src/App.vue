@@ -1,52 +1,50 @@
 <template>
   <div id="app" class="container">
     <div class="row mt-5">
-      <div class="col-8">
+      <div class="col-md-8 mb-2">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Предпросмотр</h5>
-            <div class="window-border">
-            <template v-for="(item, index) in window">
-              <div 
-                :key="`window-${index}`" 
-                class="window" :class="{active: item.type == 'active', static: item.type == 'static'}"
-                :style="{height: item.h + 'px', width: item.w + 'px'}"
-              >
-                <div class="open-left" :style="windowActivesStyle[index].styles">
-                  <div class="open-left-container" :style="windowActivesStyle[index].styles_inner"></div>
-                </div>
-              </div>
-            </template>
-            </div>
+            <svg :style="{ width: window.w, height: window.h }">
+              <rect class="window" :width=window.w :height=window.h :style="{'stroke-width': propsSVG.line.width*2}" />
+              <polygon v-if="window.type == 'active'" :points="pointsOpen" class="window-open-line" :style="{'stroke-width': propsSVG.line.width}" />
+              <polygon v-if="window.type == 'active' && window.leaf" :points="pointsLeaf" class="window-open-line" :style="{'stroke-width': propsSVG.line.width}" />
+            </svg>
           </div>
         </div>
       </div>
-      <div class="col-4">
-        <div class="card mb-2" v-for="(item, index) in window" :key="`window-${index}`">
-          <div class="card-body">
-            <h5 class="card-title">Окно # {{index+1}}</h5>
-            <div class="form-group">
-              <label>Ширина</label>
-              <input type="text" class="form-control" v-model="window[index].w">
-            </div>
-            <div class="form-group">
-              <label>Высота</label>
-              <input type="text" class="form-control" v-model="window[index].h">
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="type" value="left" id="select-left" v-model="window[index].open">
-              <label class="form-check-label" for="select-left">
-                Налево
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="type" value="right" id="select-right" v-model="window[index].open">
-              <label class="form-check-label" for="select-right">
-                направо
-              </label>
-            </div>
+      <div class="col-md-4">
+        <card title="Общие" row class="mb-2">
+          <field group label="Ширина" v-model="window.w" :column="[4, 6]" number />
+          <field group label="Высота" v-model="window.h" :column="[4, 6]" number />
+          <field group label="Толщина линий" v-model="propsSVG.line.width" :column="[4, 12]" number />
+        </card>
+        <card title="Открывание">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="type" id="select-type" v-model="window.type" true-value="active" false-value="static">
+            <label class="form-check-label" for="select-type">
+              Открывается
+            </label>
           </div>
-        </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="type" value="left" id="select-left" v-model="window.open" :disabled="window.type=='static'">
+            <label class="form-check-label" for="select-left">
+              Налево
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="type" value="right" id="select-right" v-model="window.open" :disabled="window.type=='static'">
+            <label class="form-check-label" for="select-right">
+              направо
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="type" id="select-leaf" v-model="window.leaf" :disabled="window.type=='static'">
+            <label class="form-check-label" for="select-leaf">
+              Форточка
+            </label>
+          </div>
+        </card>
       </div>
     </div>
   </div>
@@ -57,62 +55,45 @@ export default {
   name: "app",
   data() {
     return {
-      window: [
-        {
-          w: 500,
-          h: 500,
-          type: 'static',
-          open: 'left'
-        },
-        /*{
-          w: 100,
-          h: 100,
-          type: 'active',
-          open: 'left',
-        },//*/
-      ],
+      window: {
+        w: 450,
+        h: 200,
+        type: 'active',
+        open: 'right',
+        leaf: true
+      },
+      propsSVG: {
+        line: {
+          width: 3
+        }
+      }
     };
   },
   computed: {
-    windowActivesStyle() {
-      let result = []
-
-      for(let item of this.window) {
-        let styles = {}
-        let styles_inner = {}
-
-        let border = 4;
-
-        if (item.type == 'static') {
-          styles['border-top-width'] = item.h / 2 + 'px'
-          styles['border-bottom-width'] = item.h / 2 + 'px'
-
-            styles_inner['margin-top'] = - item.h / 2 + border + 'px'
-            styles_inner['border-top-width'] = item.h / 2 - border + 'px'
-            styles_inner['border-bottom-width'] = item.h / 2 - border + 'px'
-
-          if (item.open == 'left') {
-            styles['border-right-width'] = item.w + 'px'
-            styles['border-left-width'] = '0px'
-
-            styles_inner['margin-left'] = border * 0.8 + 'px'
-            styles_inner['border-right-width'] = item.w - border * 1.5 + 'px'
-            styles_inner['border-left-width'] = '0px'
-          }
-          if (item.open == 'right') {
-            styles['border-right-width'] = '0px'
-            styles['border-left-width'] = item.w + 'px'
-
-            styles_inner['margin-left'] = - item.w + border * 0.5 + 'px'
-            styles_inner['border-right-width'] = '0px'
-            styles_inner['border-left-width'] = item.w - border * 1.5 + 'px'
-          }
-        }
-
-        result.push({styles, styles_inner})
+    pointsOpen() {
+      let width = this.propsSVG.line.width;
+      let k = 0.5
+      let points = []
+      if (this.window.open == 'left') {
+        points.push(`${width*k} ${width*k}`)
+        points.push( `${this.window.w} ${this.window.h / 2}` )
+        points.push( `${width*k} ${this.window.h - width*k}` )
       }
+      if (this.window.open == 'right') {
+        points.push(`${this.window.w - width*k} ${width*k}`)
+        points.push( `0 ${this.window.h / 2}` )
+        points.push( `${this.window.w - width*k} ${this.window.h - width*k}` )
+      }
+      return points.join(', ')
+    },
+    pointsLeaf() { // Форточка
+      let points = []
 
-      return result;
+      points.push([0, this.window.h])
+      points.push([this.window.w/2, 0])
+      points.push([this.window.w, this.window.h])
+
+      return points.map( p => `${p[0]} ${p[1]}` ).join(', ')
     }
   },
   async mounted() {},
@@ -124,6 +105,7 @@ export default {
 <style lang="scss">
 
 $window-color: rgb(189, 247, 255);
+$window-line-color: rgb(94, 133, 138);
 $delay-anim: 0s;
 
 #app {
@@ -135,68 +117,11 @@ html {
   background: rgb(246, 249, 250);
 }
 
-.window-border {
-  border: 10px solid rgb(223, 236, 238);
-  display: inline-grid;
+.window { fill: $window-color; stroke: $window-line-color; }
+.window-open-line { 
+  fill: transparent; 
+  stroke: $window-line-color; 
+  stroke-width: 1;
 }
-
-.window {
-  background: $window-color;
-  display: inline-block;
-  margin: 2px;
-  transition: all $delay-anim;
-}
-
-.static {
-  .open-left {
-    transition: all $delay-anim;
-    width: 0;
-    height: 0;
-    border-top: 50px solid transparent;
-    border-right: 100px solid rgb(70, 110, 116);
-    border-left: 100px solid rgb(70, 110, 116);
-    border-bottom: 50px solid transparent;
-  }
-
-  .open-left-container {
-    transition: all $delay-anim;
-    width: 0;
-    height: 0;
-    margin-top: -48px;
-    margin-left: 2px;
-    border-top: 48px solid transparent;
-    border-right: 96px solid $window-color;
-    border-left: 96px solid $window-color;
-    border-bottom: 48px solid transparent;
-  }
-
-}
-
-.active {
-  border: 10px solid rgb(237, 241, 243);
-
-  .open-left {
-    transition: all $delay-anim;
-    width: 0;
-    height: 0;
-    margin-top: -10px;
-    margin-left: -10px;
-    border-top: 50px solid transparent;
-    border-right: 100px solid rgb(70, 110, 116);
-    border-bottom: 50px solid transparent;
-  }
-
-  .open-left-container {
-    transition: all $delay-anim;
-    width: 0;
-    height: 0;
-    margin-top: -48px;
-    margin-left: 2px;
-    border-top: 48px solid transparent;
-    border-right: 96px solid $window-color;
-    border-bottom: 48px solid transparent;
-  }
-}
-
 
 </style>

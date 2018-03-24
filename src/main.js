@@ -3,6 +3,8 @@ import App from './App.vue'
 
 import axios from 'axios'
 
+require('./myComponents/index.js')
+
 new Vue({
   el: '#app',
   render: h => h(App),
