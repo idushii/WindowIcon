@@ -1,0 +1,295 @@
+﻿html, body {
+  height: 100%;
+}
+
+.loader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url("../../Image/general/object/edb3/page-loader.gif") 50% 50% no-repeat rgb(249,249,249);
+}
+
+html, body, div, p, h1, h2, h3, h4, h5, a, span {
+  font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, 'Arial Unicode MS', sans-serif;
+}
+
+ul {
+  line-height: 1.25em;
+}
+
+h1 {
+  font-size: 24px;
+  color: #BEC0C2;
+  margin-bottom: 10px;
+  margin-left: 5pt;
+}
+
+h2 {
+  margin-top: 35px;
+  margin-bottom: 20px;
+}
+
+h3 { 
+
+}
+
+div.product h1,
+div.exhibitor h1 {
+  font-size: 1.5em;
+  color: #000;
+  margin-bottom: 3pt;
+}
+
+div.wrapper > div.exhibitor {
+  margin-bottom: 3em;
+}
+
+
+@media screen {
+
+  div.wrapper {
+    margin: 0 54pt 0 54pt !important; /* this shows the typical 19.05mm borders on A4 in the browser window (print what you see) */
+  }
+
+  div#PrintButtonElement {
+    display: block;
+    height: 25.5pt;
+    width: 70pt;
+    position: fixed;
+    margin: 15pt;
+    padding: 0 0 0 5pt;
+    right: 0;
+    top: 0;
+    border-radius: 3pt;
+    cursor: pointer;
+    background: url("/Filestore.aspx?fair=nx&type=image&key=0bdff482-16e8-44a1-846f-849bccc182a1&language=none&filegroup=&filetype=webImage");
+  }
+
+    div#PrintButtonElement span {
+      background: url('../../Image/general/object/edb3/edbIconSet.png') no-repeat -30px -113px;
+      padding: 0 0 0 20pt;
+      vertical-align: middle;
+      margin: .25em 0 .25em 0;
+      line-height: 25.5pt;
+      font-size: 12pt;
+      font-family: 'Arial', 'Arial Unicode MS', sans-serif;
+      color: #676767;
+      cursor: inherit;
+    }
+}
+
+@media print {
+
+  div.Produkt, div.Header, div.Firmenprofil, div.hallbooth, div.PrintContent, div.product {
+    page-break-inside: avoid; /* Do not split block elements on separate pages */
+  }
+
+  div.Logo, div.Produkte, h1, h2, h3, h4, h5 { /* Firefox breaks after the Logo instead of first filling the page */
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  div#PrintButtonElement {
+    display: none;
+    visibility: hidden;
+  }
+
+  div.wrapper > h1.break {
+    page-break-before: always;
+    display: block;
+  }
+
+  div {
+    font-size: 11pt;
+  }
+
+    div.wrapper {
+      font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, 'Arial Unicode MS', sans-serif;
+      line-height: 1em;
+      width: 470pt;
+      margin: 0 auto 0 auto;
+      padding: 0;
+    }
+
+    div.product,
+    div.exhibitor {
+      width: 100%;
+      height: auto;
+      border-top: none;
+      padding: 5pt;
+      padding-right: 7.5pt;
+    }
+
+  .Addr1 p,
+  .Addr2 p {
+    line-height: 0.75em;
+  }
+
+  .Addr1 {
+    margin-left: 15pt;
+  }
+
+  div.product div.PrintContent:first-of-type {
+    padding: 15pt 0;
+  }
+
+  p {
+    margin: 0;
+    margin-bottom: 5pt;
+    line-height: 1.25em;
+  }
+
+    p.subcat1 {
+      margin-left: 37.5pt;
+    }
+
+    p.subcat2 {
+      margin-left: 75pt;
+    }
+
+  div.Logo {
+    background: transparent no-repeat;
+    padding: 15pt 0 15pt 5pt;
+    height: 80pt;
+    width: 400pt;
+    max-width: 400pt;
+    overflow: hidden;
+  }
+
+  div.Header {
+    width: 100%;
+    max-width: inherit;
+    margin: 15pt 0 0 0;
+    padding: 0 0 15pt 0;
+    border: 1.5pt solid #BEC0C2;
+    overflow: hidden;
+  }
+
+    div.Header h1, div.Header img, div.Header div {
+      margin-left: 15pt;
+    }
+
+    div.Header h1 {
+      width: auto;
+    }
+
+
+  div.Addr1 {
+    width: auto;
+  }
+
+  div.Addr2 {
+    width: auto;
+  }
+
+  div.Firmenprofil {
+    width: 100%;
+  }
+
+  div.Produkte {
+    width: 100%;
+    margin: 15pt 0 15pt 0;
+    display: inline-block;
+  }
+
+  div.Produkt {
+    float: left;
+    width: 100%;
+    border: 1.5pt solid #BEC0C2;
+    margin-bottom: 15pt;
+    display: inline-block;
+  }
+
+  div.Produktbild {
+    float: left;
+    width: 90pt;
+    margin: 15pt 0 15pt 15pt;
+  }
+
+  div.ProduktbildPr {
+    float: left;
+    width: 150pt;
+    margin-right: 15pt;
+  }
+
+  div.Produktbeschreibung {
+    float: left;
+    width: 300pt;
+    height: 120pt;
+    margin: 15pt 35pt 15pt 15pt;
+    overflow: hidden;
+  }
+
+  div.hallbooth {
+    float: left;
+    width: 100%;
+  }
+
+  div.productgroups {
+    float: left;
+    width: 100%;
+    margin: 7.5pt 0 7.5pt 15pt;
+  }
+
+  div.Ausstellerinfo {
+    float: right;
+    width: 100%;
+    height: 135pt;
+  }
+
+  div.product {
+    width: 100%;
+    height: auto;
+  }
+
+  div.PrintContent {
+    float: left;
+    width: 100%;
+    height: auto;
+    padding: 0 0 7.5pt 0;
+    line-height: 1em;
+  }
+
+  h2 ~ div.PrintContent:first-of-type {
+    border: 1.5pt solid #BEC0C2;
+  }
+
+  div.PrintContent span > p:first-of-type {
+    margin-top: 10pt;
+  }
+
+  div.printNote {
+    margin-left: 15pt;
+    margin-bottom: 15pt;
+  }
+
+  img.DummyHallBig {
+    border: 0.75pt solid #BEC0C2;
+    background: #CCCCCC;
+    width: 345pt;
+    height: 240pt;
+  }
+
+  .cs:after {
+    /* für Firefox, IE8, Opera, Safari, etc. */
+    content: ".";
+    display: block;
+    height: 0;
+    line-height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+
+  * + html .cs {
+    /* für IE7 */
+    display: inline-block;
+  }
+
+  * html .cs {
+    /* für IE6 */
+    height: 1%;
+  }
+}
