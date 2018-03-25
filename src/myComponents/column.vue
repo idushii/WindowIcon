@@ -13,11 +13,7 @@
       lg: { type: [String, Boolean], default: false },
       offset: {
         type: Object,
-        default: function() { return {
-          sm: 0,
-          md: 0,
-          lg: 0
-        } }
+        default: function() { return { sm: 0, md: 0, lg: 0 } }
       },
       left: { type: [String, Boolean], default: false },
       center: { type: [String, Boolean], default: false },
