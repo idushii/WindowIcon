@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import editOneWindow from './Pages/editOneWindow.vue'
+import editPhoneOneWindow from './Pages/editPhoneOneWindow.vue'
 import window from './components/window.vue'
 import VueRouter from 'vue-router'
 
@@ -25,7 +26,7 @@ let routes = [
   {
     path: '/one/phone',
     name: 'editPhoneOneWindow',
-    component: editOneWindow
+    component: editPhoneOneWindow
   }
 ]
 

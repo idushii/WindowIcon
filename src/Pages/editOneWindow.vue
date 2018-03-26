@@ -7,11 +7,6 @@
             <window 
               :window=window 
               :propsSVG=propsSVG 
-              :pointsGlass=pointsGlass 
-              :pointsOpen=pointsOpen 
-              :pointsLeaf=pointsLeaf 
-              :pointsFrame=pointsFrame 
-              :positionPen=positionPen
             />
           </div>
         </div>
