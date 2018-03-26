@@ -14,7 +14,9 @@
     "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "materialize-css": "^1.0.0-beta",
-    "vue": "^2.5.11"
+    "vue": "^2.5.11",
+    "vue-bootstrap-elements": "^0.0.1",
+    "vue-router": "^3.0.1"
   },
   "browserslist": [
     "> 1%",
