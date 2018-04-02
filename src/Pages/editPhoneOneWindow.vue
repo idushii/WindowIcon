@@ -5,6 +5,7 @@
       :window=window 
       :propsSVG=propsSVG 
       @click-svg="clickSvg"
+      @export="svg => this.exportSVG = svg"
       />
     <div class="card-body">
       <field button value="Настройки" right @click="props = true" />
@@ -16,6 +17,7 @@
     <field label="Толщина линий" v-model="propsSVG.line.width" number />
     <field label="Размер рамы" v-model="propsSVG.frame.width" number />
     <field label="Размер фиксированной рамы" v-model="propsSVG.frame.widthStatic" number />
+    <field label="Экспорт" :value="exportSVG" textarea />
   </card>
 </div>
 </template>
@@ -43,7 +45,8 @@ import mixinWindow from './../mixinWindow'
             widthStatic: 15
           }
         },
-        props: false
+        props: false,
+        exportSVG: ""
       }
     },
     computed: {

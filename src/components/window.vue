@@ -1,11 +1,31 @@
 <template>
-  <svg :viewBox="`0 0 ${window.w} ${window.h}`" @click="onclick">
-    <rect class="window-frame" :width=window.w :height=window.h />
-    <rect class="window" :width=pointsGlass.glass.width :height=pointsGlass.glass.height :x=pointsGlass.glass.x :y=pointsGlass.glass.y />
-    <polygon :style="{'stroke-width': propsSVG.line.width*1.5}" class="window-glass-border" :points=pointsGlass.border />
-    <polyline :points="pointsFrame" class="window-open-line" :style="{'stroke-width': propsSVG.line.width}" />
-    <polygon v-if="window.type == 'active'" :points="pointsOpen" class="window-open-line" :style="{'stroke-width': propsSVG.line.width}" />
-    <polygon v-if="window.type == 'active' && window.leaf" :points="pointsLeaf" class="window-open-line" :style="{'stroke-width': propsSVG.line.width}" />
+  <svg :viewBox="`0 0 ${window.w} ${window.h}`" @click="onclick" id="window_svg">
+    <rect class="window-frame" :style="{fill: style.frame_color}" :width=window.w :height=window.h />
+    <rect 
+      class="window"  :style="{fill: style.window_color}"
+      :width=pointsGlass.glass.width :height=pointsGlass.glass.height 
+      :x=pointsGlass.glass.x :y=pointsGlass.glass.y 
+    />
+    <polygon 
+      :style="{'stroke-width': propsSVG.line.width*1.5}" style="fill: transparent;"
+      class="window-glass-border" 
+      :points=pointsGlass.border 
+    />
+    <polyline 
+      :points="pointsFrame" 
+      class="window-open-line" 
+      :style="{'stroke-width': propsSVG.line.width, stroke: style.window_line_color}" style="fill: transparent;"
+    />
+    <polygon 
+      v-if="window.type == 'active'" 
+      :points="pointsOpen" class="window-open-line" 
+      :style="{'stroke-width': propsSVG.line.width, stroke: style.window_line_color}" style="fill: transparent;"
+    />
+    <polygon 
+      v-if="window.type == 'active' && window.leaf" 
+      :points="pointsLeaf" class="window-open-line" 
+      :style="{'stroke-width': propsSVG.line.width, stroke: style.window_line_color}" style="fill: transparent;"
+    />
     <image id="pen" v-if="window.type == 'active'" xlink:href="./pen.png" :x=positionPen.x :y=positionPen.y :width="propsSVG.frame.width*0.75+'px'"/>
   </svg>
 </template>
@@ -20,10 +40,15 @@
         default: () => ({ w: 100, h: 100, type: 'static', leaf: false })
       },
       propsSVG: {},
-      
     },
     data() {
-      return {}
+      return {
+        style: {
+          window_color: 'rgb(189, 247, 255)',
+          frame_color: 'rgb(224, 234, 238)',
+          window_line_color: 'rgb(94, 133, 138)',
+        }
+      }
     },
     computed: {
       pointsGlass() {
@@ -103,8 +128,11 @@
         let {w, h} = {...this.window}
         console.log(window.pen)
         return { x: this.window.open == 'left' ?  w - frame * 0.85 : frame*0.15, y: (h/2) - (frame * 3 / 2) }
+      },
+      export() {
+        this.$emit('export', window.window_svg.outerHTML)
+        return window.window_svg.outerHTML
       }
-      
     },
     mounted() {},
     methods: {
@@ -133,22 +161,5 @@ $frame-color: rgb(224, 234, 238);
 $window-line-color: rgb(94, 133, 138);
 
 svg { width: 100%; height: 100%; }
-
-.window { fill: $window-color; }
-.window-open-line { 
-  fill: transparent; 
-  stroke: $window-line-color; 
-  stroke-width: 1;
-}
-
-.window-glass-border {
-  fill: transparent; 
-  stroke: $window-line-color; 
-  stroke-width: 1;
-}
-
-.window-frame {
-  fill: $frame-color;
-}
 
 </style>
