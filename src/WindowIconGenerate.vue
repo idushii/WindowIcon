@@ -11,6 +11,7 @@
         :windows=windows ref="multiWindow" 
         @showoverlay="value => showOverlay = value"
         @update-icon="updateIcon"
+        :isEdit=true
       />
     </card>
     <card title="EXPORT" class="mb-2" v-if="showExportCard">
@@ -24,11 +25,11 @@
 
 <script>
   export default {
-    name: 'index',
+    name: 'WindowIconGenerate',
     props: {
       composition: {
         type: Array,
-        default: () => ([])
+        default: () => ([[{ w: 450, h: 400, type: 'static', open: 'left', leaf: false }]])
       },
       defaultComposition: {
         type: Number,
@@ -48,7 +49,7 @@
       },
     },
     data: () => ({
-      indexComposition: this.defaultComposition,
+      indexComposition: null,
       exportSVG: "",
       showOverlay: false,
       icons: []
@@ -86,6 +87,7 @@
         //console.log('getExportSVG');
         this.exportSVG = this.$refs.multiWindow.calculateExport()
         this.$emit('export-window-icon', this.exportSVG)
+        this.$emit('export-window-icon-struct', this.windows)
       },
       updateIcon() {
         this.$nextTick()

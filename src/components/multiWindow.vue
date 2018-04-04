@@ -1,13 +1,14 @@
 <template>
-  <div id="multi_window">
+  <div :id="`multi_window-${key}`" class="multi_window">
     <template v-for="(window, index) in windows">
       <div class="window-col" v-if="window.type" :key="`window-${index}`" :class="{'width-100': window.width == 100}">
         <windowEvents 
           :window=window 
           :propsSVG=propsSVG 
           :scale=scale 
-          :id="`window-${index}`"
-          ref="window"
+          :id="`window-${index}-${key}`"
+          ref="window" 
+          :isEdit=isEdit 
           @click-right="toggleProps"
           @click-svg="$emit('update-icon')"
         />
@@ -20,13 +21,14 @@
             :scale=scale 
             :id="`window-${index}-${indexRow}`" 
             ref="window" 
+            :isEdit=isEdit 
             @click-right="toggleProps"
             @click-svg="$emit('update-icon')"
           />
         </div>
       </div>
     </template>
-    <div :style="{top: propsEnter.position.top+'px', left: propsEnter.position.left+'px', width: propsEnter.position.width+'px', height: propsEnter.position.height+'px'}" class="props-enter"  v-if="propsEnter.show">
+    <div :style="{top: propsEnter.position.top+'px', left: propsEnter.position.left+'px', width: propsEnter.position.width+'px', height: propsEnter.position.height+'px'}" class="props-enter"  v-if="isEdit && propsEnter.show">
       <card title="Свойства" @close="toggleProps(false)">
         <field sm label="Ширина" :value="selectWindow.w" @change="value => selectWindow.w = value*1" number />
         <field sm label="Высота" :value="selectWindow.h" @change="value => selectWindow.h = value*1" number />
@@ -41,7 +43,7 @@
     props: {
       windows: {
         type: Array,
-        default: () => ([{w: 500, h: 500}])
+        default: () => ([[{w: 500, h: 500}]])
       },
       propsSVG: {
         type: Object,
@@ -50,7 +52,12 @@
       widthExportSVG: {
         type: Number,
         default: 100
-      }
+      },
+      isEdit: {
+        type: Boolean,
+        default: false
+      },
+      widthIcon: { type: Number, default: null }
     },
     data() {
       return {
@@ -61,19 +68,27 @@
       }
     },
     computed: {
-      scale() {
-        if (this.onload == false) return 1
-
+      key() {
+        return Math.round(Math.random() * 1000)
+      },
+      rectWidth() {
+        if (this.widthIcon === null) return window[`multi_window-${this.key}`].clientWidth;
+        window[`multi_window-${this.key}`].style.width = `${this.widthIcon}px`
+        return this.widthIcon
+      },
+      windowWidth() {
         let widthWindows = 0;
-        let widthBrowser = window.multi_window.clientWidth
-
         for (let window of this.windows) {
           if (window.type) widthWindows += window.w
           else {
             widthWindows += Math.max( ...window.map( w => w.width ? 0 : w.w ) )
           }
         }
-        return widthBrowser / widthWindows
+        return widthWindows
+      },
+      scale() {
+        if (this.onload == false) return 1
+        return this.rectWidth / this.windowWidth
       },
       widthRow() {
         let result = []
@@ -124,8 +139,8 @@
       calculateExport() {
         let svg_ = []
         let offsetX = 0, offsetY = 0;
-        let width = window.multi_window.clientWidth
-        let height = window.multi_window.clientHeight
+        let width = window[`multi_window-${this.key}`].clientWidth
+        let height = window[`multi_window-${this.key}`].clientHeight
 
         //width = 500
         //height = 500
@@ -175,7 +190,7 @@
     min-width: 150px;
   }
 
-  #multi_window {
+  .multi_window {
     width: 100%;
     display: flex;
     flex-wrap: wrap;

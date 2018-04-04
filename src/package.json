@@ -1,0 +1,25 @@
+{
+  "name": "windows-icon-generate",
+  "version": "0.0.4",
+  "description": "Генератор иконок окон.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/idushii/WindowIcon.git"
+  },
+  "keywords": [
+    "vue",
+    "window",
+    "windows",
+    "vue-bootstrap-elements"
+  ],
+  "author": "ILINOV NICOLAY",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/idushii/WindowIcon/issues"
+  },
+  "homepage": "https://github.com/idushii/WindowIcon#readme"
+}

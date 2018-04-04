@@ -46,6 +46,7 @@
       propsSVG: {},
       scale: { type: Number, default: 1 },
       id: { type: String, default: 'window_svg' },
+      isEdit: { type: Boolean, default: false }
     },
     data() {
       return {
@@ -149,6 +150,7 @@
     mounted() {},
     methods: {
       onclick(clickPos) {
+        if (!this.isEdit) return;
         let svg = clickPos.path.filter( item => item.nodeName == 'svg' ).pop();
         let {clientHeight, clientWidth} = window[this.id].parentNode
         let offsetTop = window[this.id].parentNode.getBoundingClientRect().top
@@ -175,6 +177,7 @@
         //console.log({...this.window});
       },
       rightClick(e) {
+        if (!this.isEdit) return;
         this.$emit('click-right', this.id)
         e.preventDefault();
       },

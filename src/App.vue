@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="container">
-    <index :composition=composition @export-window-icon="showSCG" />
+    <WindowIconGenerate />
+    <!--multiWindow :windows="composition[1]" /-->
   </div>
 </template>
 
